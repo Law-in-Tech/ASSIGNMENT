@@ -1,0 +1,81 @@
+# Base class
+class Lawyer:
+    def __init__(self, name, qualification_year, practice_area, firm_name):
+        """
+        Initialize the Lawyer object.
+        """
+        self.name = name
+        self.qualification_year = qualification_year
+        self.practice_area = practice_area
+        self.firm_name = firm_name
+        self.clients = []  # A list to store client names
+
+    def introduce(self):
+        """
+        Introduce the lawyer with their professional background.
+        """
+        return (f"My name is {self.name}. I was called to the Nigerian Bar in {self.qualification_year}, "
+                f"and I specialize in {self.practice_area}. Currently, I work at {self.firm_name}.")
+
+    def add_client(self, client_name):
+        """
+        Add a client to the lawyer's client list.
+        """
+        self.clients.append(client_name)
+        print(f"Client {client_name} added successfully!")
+
+    def list_clients(self):
+        """
+        List all clients.
+        """
+        if self.clients:
+            return f"My clients are: {', '.join(self.clients)}."
+        return "I have no clients at the moment."
+
+# Subclass for Specialized Lawyer
+class CorporateLawyer(Lawyer):
+    def __init__(self, name, qualification_year, firm_name, corporate_focus):
+        """
+        Initialize the CorporateLawyer object, inheriting from Lawyer.
+        """
+        super().__init__(name, qualification_year, "Corporate Law", firm_name)
+        self.corporate_focus = corporate_focus  # e.g., Mergers, Contracts, Compliance
+
+    def draft_contract(self, contract_name):
+        """
+        Simulate drafting a corporate contract.
+        """
+        return f"{self.name} is drafting a {contract_name} focused on {self.corporate_focus}."
+
+class LitigationLawyer(Lawyer):
+    def __init__(self, name, qualification_year, firm_name, court_experience_years):
+        """
+        Initialize the LitigationLawyer object, inheriting from Lawyer.
+        """
+        super().__init__(name, qualification_year, "Litigation", firm_name)
+        self.court_experience_years = court_experience_years
+
+    def argue_case(self, case_name):
+        """
+        Simulate arguing a case in court.
+        """
+        return (f"{self.name} is arguing the case '{case_name}' in court with "
+                f"{self.court_experience_years} years of experience in litigation.")
+
+# Example usage
+if __name__ == "__main__":
+    # Create a general lawyer
+    general_lawyer = Lawyer("Chinwe Okafor", 2015, "General Practice", "Legal Path Chambers")
+    print(general_lawyer.introduce())
+    general_lawyer.add_client("Adeolu Johnson")
+    print(general_lawyer.list_clients())
+
+    # Create a corporate lawyer
+    corporate_lawyer = CorporateLawyer("Tunde Adebayo", 2010, "Lex & Co", "Mergers and Acquisitions")
+    print(corporate_lawyer.introduce())
+    print(corporate_lawyer.draft_contract("Shareholders' Agreement"))
+
+    # Create a litigation lawyer
+    litigation_lawyer = LitigationLawyer("Fatima Yusuf", 2012, "Advocate Partners", 8)
+    print(litigation_lawyer.introduce())
+    print(litigation_lawyer.argue_case("Land Dispute: Yusuf v. Adamu"))

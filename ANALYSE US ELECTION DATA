@@ -1,0 +1,110 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Load and explore data
+def load_data(filepath):
+    """
+    Load election data from a CSV file.
+    """
+    try:
+        data = pd.read_csv(filepath)
+        print(f"Data loaded successfully from {filepath}\n")
+        print("First 5 rows of the data:")
+        print(data.head())
+        return data
+    except FileNotFoundError:
+        print(f"Error: The file at {filepath} does not exist.")
+        return None
+    except Exception as e:
+        print(f"An error occurred while loading the data: {e}")
+        return None
+
+def explore_data(data):
+    """
+    Perform basic exploration of the dataset.
+    """
+    print("\n--- Data Information ---")
+    print(data.info())
+    print("\n--- Summary Statistics ---")
+    print(data.describe())
+    print("\n--- Column Names ---")
+    print(data.columns)
+    print("\n--- Missing Values ---")
+    print(data.isnull().sum())
+
+# Basic data analysis
+def analyze_data(data):
+    """
+    Analyze the election data for trends and insights.
+    """
+    print("\n--- Total Votes by State ---")
+    total_votes_by_state = data.groupby("State")["TotalVotes"].sum().sort_values(ascending=False)
+    print(total_votes_by_state)
+
+    print("\n--- Total Votes by Party ---")
+    total_votes_by_party = data.groupby("Party")["TotalVotes"].sum()
+    print(total_votes_by_party)
+
+    return total_votes_by_state, total_votes_by_party
+
+# Visualizations
+def create_visualizations(data):
+    """
+    Create visualizations for the election data.
+    """
+    # Total Votes by State (Bar Chart)
+    plt.figure(figsize=(12, 6))
+    state_votes = data.groupby("State")["TotalVotes"].sum().sort_values(ascending=False)
+    state_votes.plot(kind="bar", color="skyblue")
+    plt.title("Total Votes by State", fontsize=16)
+    plt.xlabel("State", fontsize=12)
+    plt.ylabel("Total Votes", fontsize=12)
+    plt.xticks(rotation=90)
+    plt.tight_layout()
+    plt.show()
+
+    # Total Votes by Party (Pie Chart)
+    party_votes = data.groupby("Party")["TotalVotes"].sum()
+    plt.figure(figsize=(8, 8))
+    party_votes.plot(kind="pie", autopct="%1.1f%%", startangle=140, colors=sns.color_palette("pastel"))
+    plt.title("Total Votes by Party", fontsize=16)
+    plt.ylabel("")
+    plt.tight_layout()
+    plt.show()
+
+    # Voter Turnout Percentage by State (Heatmap)
+    plt.figure(figsize=(12, 8))
+    voter_turnout = data.pivot_table(values="VoterTurnout", index="State", aggfunc="mean")
+    sns.heatmap(voter_turnout, annot=True, cmap="YlGnBu", fmt=".1f", cbar=True)
+    plt.title("Voter Turnout Percentage by State", fontsize=16)
+    plt.xlabel("")
+    plt.ylabel("State", fontsize=12)
+    plt.tight_layout()
+    plt.show()
+
+# Main script
+if __name__ == "__main__":
+    # Filepath to the dataset (update with your actual file path)
+    filepath = "usa_election_data.csv"  # Replace with your file name
+
+    # Load data
+    election_data = load_data(filepath)
+
+    if election_data is not None:
+        # Explore data
+        explore_data(election_data)
+
+        # Analyze data
+        total_votes_by_state, total_votes_by_party = analyze_data(election_data)
+
+        # Visualize data
+        create_visualizations(election_data)
+
+        # Observations
+        print("\n--- Observations ---")
+        print("1. States with the highest total votes cast are likely swing states or highly populated areas.")
+        print("2. The majority of votes may be concentrated among two major parties (e.g., Democrat and Republican).")
+        print("3. Voter turnout varies widely across states, with some states showing much higher participation.")
+    else:
+        print("Analysis cannot proceed as the data could not be loaded.")

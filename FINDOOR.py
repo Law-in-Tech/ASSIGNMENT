@@ -80,7 +80,7 @@ class Transaction:
 
     def verify_transaction(self):
         """
-        Verifies if the transaction complies with Nigerian financial laws (e.g., Banks and Other Financial Institutions Act, 2020; Money Laundering (Prohibition) Act (MLPA) of 2011).
+        Verifies if the transaction complies with Nigerian financial laws (e.g., Banks and Other Financial Institutions Act, 2020; Money Laundering (Prohibition) Act (MLPA) of 2011)The Money Laundering (Prevention and Prohibition) Act, 2022 (MLA 2022).
         """
         if self.is_legal:
             print(f"Transaction {self.transaction_id} is verified and compliant with Nigerian laws.")

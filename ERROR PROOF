@@ -1,0 +1,35 @@
+def read_and_write_file():
+    """
+    Reads a file specified by the user, modifies its content,
+    and writes it to a new file, handling errors gracefully.
+    """
+    try:
+        # Ask the user for the file to read
+        input_filename = input("Enter the name of the file to read from: ")
+
+        # Try opening and reading the file
+        with open(input_filename, 'r') as infile:
+            content = infile.readlines()
+
+        # Modify the content (e.g., add line numbers)
+        modified_content = [f"{i + 1}: {line}" for i, line in enumerate(content)]
+
+        # Ask the user for the output filename
+        output_filename = input("Enter the name of the file to write to: ")
+
+        # Write the modified content to the new file
+        with open(output_filename, 'w') as outfile:
+            outfile.writelines(modified_content)
+
+        print(f"File successfully modified and saved as '{output_filename}'.")
+
+    except FileNotFoundError:
+        print(f"Error: The file '{input_filename}' does not exist.")
+    except IOError:
+        print(f"Error: There was an issue reading from or writing to a file.")
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
+
+
+# Run the program
+read_and_write_file()
